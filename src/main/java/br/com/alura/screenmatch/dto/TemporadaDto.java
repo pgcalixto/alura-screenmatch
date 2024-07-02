@@ -1,4 +1,4 @@
-package br.com.alura.screenmatch.model;
+package br.com.alura.screenmatch.dto;
 
 import java.util.List;
 
@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public record Temporada(
+public record TemporadaDto(
         @JsonAlias("Season") Integer numero,
-        @JsonAlias("Episodes") List<Episodio> episodios) {
+        @JsonAlias("Episodes") List<EpisodioDto> episodios) {
 
 }

@@ -8,8 +8,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import br.com.alura.screenmatch.dto.SerieDto;
+import br.com.alura.screenmatch.dto.TemporadaDto;
+import br.com.alura.screenmatch.mapper.SerieMapper;
 import br.com.alura.screenmatch.model.Serie;
-import br.com.alura.screenmatch.model.Temporada;
 
 @Service
 public class ConsumoApi {
@@ -18,6 +20,9 @@ public class ConsumoApi {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private SerieMapper serieMapper;
 
     private final String CHAVE_SERIE = "t";
 
@@ -37,12 +42,14 @@ public class ConsumoApi {
                 .encode()
                 .toUri();
 
-        Serie serie = restTemplate.getForObject(uri, Serie.class);
+        SerieDto serieDto = restTemplate.getForObject(uri, SerieDto.class);
+
+        Serie serie = serieMapper.serieDtoToSerie(serieDto);
 
         return serie;
     }
 
-    public Temporada getTemporada(final String nomeSerie, final int numeroTemporada) {
+    public TemporadaDto getTemporada(final String nomeSerie, final int numeroTemporada) {
 
         URI uri = UriComponentsBuilder.fromHttpUrl(ENDERECO_BASE)
                 .queryParam(CHAVE_API_KEY, API_KEY)
@@ -52,7 +59,7 @@ public class ConsumoApi {
                 .encode()
                 .toUri();
 
-        Temporada temporada = restTemplate.getForObject(uri, Temporada.class);
+        TemporadaDto temporada = restTemplate.getForObject(uri, TemporadaDto.class);
 
         return temporada;
     }

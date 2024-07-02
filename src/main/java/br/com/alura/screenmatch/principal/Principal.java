@@ -8,15 +8,15 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
-import br.com.alura.screenmatch.model.Episodio;
+import br.com.alura.screenmatch.dto.TemporadaDto;
 import br.com.alura.screenmatch.model.Serie;
-import br.com.alura.screenmatch.model.Temporada;
 import br.com.alura.screenmatch.service.ConsumoApi;
 
 @Service
-public class Principal {
+public class Principal implements CommandLineRunner {
 
     @Autowired
     private ConsumoApi consumoApi;
@@ -24,6 +24,13 @@ public class Principal {
     private Scanner scanner = new Scanner(System.in);
 
     private List<Serie> series = new ArrayList<Serie>();
+
+    @Override
+    public void run(String... args) throws Exception {
+        System.out.println("Primeiro projeto Spring sem Web");
+
+        exibeMenu();
+    }
 
     public void exibeMenu() {
 
@@ -90,23 +97,12 @@ public class Principal {
 
         String nomeSerieFormatada = serie.titulo().replace(" ", "+");
 
-        List<Temporada> temporadas = IntStream
+        List<TemporadaDto> temporadas = IntStream
                 .range(1, serie.totalTemporadas() + 1)
                 .mapToObj(i -> consumoApi.getTemporada(nomeSerieFormatada, i))
                 .collect(Collectors.toList());
 
         temporadas.forEach(System.out::println);
-
-        final List<Episodio> episodios = temporadas.stream()
-                .flatMap(temporada -> temporada.episodios().stream())
-                .collect(Collectors.toList());
-
-        episodios
-            .stream()
-            .filter(episodio -> !episodio.avaliacao().equalsIgnoreCase("N/A"))
-            .sorted(Comparator.comparing(Episodio::avaliacao).reversed())
-            .limit(5)
-            .forEach(System.out::println);
     }
 
     private void listarSeriesBuscadas() {
