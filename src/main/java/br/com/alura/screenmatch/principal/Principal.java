@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.alura.screenmatch.dto.TemporadaDto;
 import br.com.alura.screenmatch.model.Serie;
+import br.com.alura.screenmatch.repository.SerieRepository;
 import br.com.alura.screenmatch.service.ConsumoApi;
 
 @Service
@@ -20,6 +21,9 @@ public class Principal implements CommandLineRunner {
 
     @Autowired
     private ConsumoApi consumoApi;
+
+    @Autowired
+    private SerieRepository serieRepository;
 
     private Scanner scanner = new Scanner(System.in);
 
@@ -84,7 +88,7 @@ public class Principal implements CommandLineRunner {
 
         Serie serie = consumoApi.getSerie(nomeSerieFormatada);
 
-        series.add(serie);
+        serieRepository.save(serie);
 
         System.out.println(serie);
 
@@ -95,10 +99,10 @@ public class Principal implements CommandLineRunner {
 
         Serie serie = buscarSerie();
 
-        String nomeSerieFormatada = serie.titulo().replace(" ", "+");
+        String nomeSerieFormatada = serie.getTitulo().replace(" ", "+");
 
         List<TemporadaDto> temporadas = IntStream
-                .range(1, serie.totalTemporadas() + 1)
+                .range(1, serie.getTotalTemporadas() + 1)
                 .mapToObj(i -> consumoApi.getTemporada(nomeSerieFormatada, i))
                 .collect(Collectors.toList());
 
@@ -109,8 +113,8 @@ public class Principal implements CommandLineRunner {
 
         series.stream()
                 .sorted(Comparator.comparing(
-                        serie -> !serie.generos().isEmpty()
-                                ? serie.generos().get(0)
+                        serie -> !serie.getGeneros().isEmpty()
+                                ? serie.getGeneros().get(0)
                                 : null,
                         Comparator.nullsLast(Comparator.naturalOrder())
                 ))
