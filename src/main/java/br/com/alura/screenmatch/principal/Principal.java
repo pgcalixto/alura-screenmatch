@@ -82,11 +82,11 @@ public class Principal implements CommandLineRunner {
     private Serie buscarSerie() {
 
         System.out.println("Digite o nome da série para a busca");
-        String nomeSerie = scanner.nextLine();
+        final String nomeSerie = scanner.nextLine();
 
-        String nomeSerieFormatada = nomeSerie.replace(" ", "+");
+        final String nomeSerieFormatada = nomeSerie.replace(" ", "+");
 
-        Serie serie = consumoApi.getSerie(nomeSerieFormatada);
+        final Serie serie = consumoApi.getSerie(nomeSerieFormatada);
 
         serieRepository.save(serie);
 
@@ -97,11 +97,11 @@ public class Principal implements CommandLineRunner {
 
     private void buscarEpisodiosSerie() {
 
-        Serie serie = buscarSerie();
+        final Serie serie = buscarSerie();
 
-        String nomeSerieFormatada = serie.getTitulo().replace(" ", "+");
+        final String nomeSerieFormatada = serie.getTitulo().replace(" ", "+");
 
-        List<TemporadaDto> temporadas = IntStream
+        final List<TemporadaDto> temporadas = IntStream
                 .range(1, serie.getTotalTemporadas() + 1)
                 .mapToObj(i -> consumoApi.getTemporada(nomeSerieFormatada, i))
                 .collect(Collectors.toList());
