@@ -11,7 +11,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.alura.screenmatch.dto.SerieDto;
 import br.com.alura.screenmatch.dto.TemporadaDto;
 import br.com.alura.screenmatch.mapper.SerieMapper;
+import br.com.alura.screenmatch.mapper.TemporadaMapper;
 import br.com.alura.screenmatch.model.Serie;
+import br.com.alura.screenmatch.model.Temporada;
 
 @Service
 public class ConsumoApi {
@@ -23,6 +25,9 @@ public class ConsumoApi {
 
     @Autowired
     private SerieMapper serieMapper;
+
+    @Autowired
+    private TemporadaMapper temporadaMapper;
 
     private final String CHAVE_SERIE = "t";
 
@@ -49,7 +54,7 @@ public class ConsumoApi {
         return serie;
     }
 
-    public TemporadaDto getTemporada(final String nomeSerie, final int numeroTemporada) {
+    public Temporada getTemporada(final String nomeSerie, final int numeroTemporada) {
 
         URI uri = UriComponentsBuilder.fromHttpUrl(ENDERECO_BASE)
                 .queryParam(CHAVE_API_KEY, API_KEY)
@@ -59,7 +64,9 @@ public class ConsumoApi {
                 .encode()
                 .toUri();
 
-        TemporadaDto temporada = restTemplate.getForObject(uri, TemporadaDto.class);
+        TemporadaDto temporadaDto = restTemplate.getForObject(uri, TemporadaDto.class);
+
+        Temporada temporada = temporadaMapper.temporadaDtoToTemporada(temporadaDto);
 
         return temporada;
     }

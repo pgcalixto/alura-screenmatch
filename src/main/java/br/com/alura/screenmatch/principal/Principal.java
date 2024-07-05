@@ -1,9 +1,9 @@
 package br.com.alura.screenmatch.principal;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -11,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
-import br.com.alura.screenmatch.dto.TemporadaDto;
 import br.com.alura.screenmatch.model.Serie;
+import br.com.alura.screenmatch.model.Temporada;
 import br.com.alura.screenmatch.repository.SerieRepository;
 import br.com.alura.screenmatch.service.ConsumoApi;
 
@@ -26,8 +26,6 @@ public class Principal implements CommandLineRunner {
     private SerieRepository serieRepository;
 
     private Scanner scanner = new Scanner(System.in);
-
-    private List<Serie> series = new ArrayList<Serie>();
 
     @Override
     public void run(String... args) throws Exception {
@@ -97,12 +95,32 @@ public class Principal implements CommandLineRunner {
 
     private void buscarEpisodiosSerie() {
 
-        final Serie serie = buscarSerie();
+        final List<Serie> series = serieRepository.findAll();
 
-        final String nomeSerieFormatada = serie.getTitulo().replace(" ", "+");
+        final Set<String> nomeSeries = series.stream()
+                .map(Serie::getTitulo)
+                .map(String::toLowerCase)
+                .collect(Collectors.toSet());
 
-        final List<TemporadaDto> temporadas = IntStream
-                .range(1, serie.getTotalTemporadas() + 1)
+        System.out.println(
+                "Digite o nome da série para buscar seus episódios: " + nomeSeries.toString());
+
+        final String nomeSerie = scanner.nextLine();
+
+        final Serie serieBuscada = series.stream()
+                .filter(serie -> serie.getTitulo().toLowerCase().contains(nomeSerie))
+                .findFirst()
+                .orElse(null);
+
+        if (serieBuscada == null) {
+            System.out.println("Série não encontrada. Tente novamente.");
+            return;
+        }
+
+        final String nomeSerieFormatada = nomeSerie.replace(" ", "+");
+
+        final List<Temporada> temporadas = IntStream
+                .range(1, serieBuscada.getTotalTemporadas() + 1)
                 .mapToObj(i -> consumoApi.getTemporada(nomeSerieFormatada, i))
                 .collect(Collectors.toList());
 
@@ -110,6 +128,8 @@ public class Principal implements CommandLineRunner {
     }
 
     private void listarSeriesBuscadas() {
+
+        final List<Serie> series = serieRepository.findAll();
 
         series.stream()
                 .sorted(Comparator.comparing(
