@@ -52,7 +52,7 @@ public class Principal implements CommandLineRunner {
         while (opcao != 0) {
 
             System.out.println(menu);
-    
+
             opcao = scanner.nextInt();
             scanner.nextLine();
 
@@ -115,8 +115,8 @@ public class Principal implements CommandLineRunner {
 
         final String trechoTituloSerie = scanner.nextLine();
 
-        final Optional<Serie> optionalSerieEncontrada =
-                serieRepository.findByTituloContainingIgnoreCase(trechoTituloSerie);
+        final Optional<Serie> optionalSerieEncontrada = serieRepository
+                .findByTituloContainingIgnoreCase(trechoTituloSerie);
 
         if (optionalSerieEncontrada.isEmpty()) {
             System.out.println("Série não encontrada.");
@@ -153,20 +153,19 @@ public class Principal implements CommandLineRunner {
                         serie -> !serie.getGeneros().isEmpty()
                                 ? serie.getGeneros().get(0)
                                 : null,
-                        Comparator.nullsLast(Comparator.naturalOrder())
-                ))
+                        Comparator.nullsLast(Comparator.naturalOrder())))
                 .forEach(System.out::println);
     }
 
     private void buscarSeriePorTitulo() {
 
         System.out.println(
-            "Digite o trecho do título da série para buscar:");
+                "Digite o trecho do título da série para buscar:");
 
         final String trechoTituloSerie = scanner.nextLine();
 
-        final Optional<Serie> optionalSerieEncontrada =
-                serieRepository.findByTituloContainingIgnoreCase(trechoTituloSerie);
+        final Optional<Serie> optionalSerieEncontrada = serieRepository
+                .findByTituloContainingIgnoreCase(trechoTituloSerie);
 
         if (optionalSerieEncontrada.isEmpty()) {
             System.out.println("Série não encontrada.");
