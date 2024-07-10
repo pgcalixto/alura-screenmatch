@@ -2,6 +2,7 @@ package br.com.alura.screenmatch.principal;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -42,6 +43,7 @@ public class Principal implements CommandLineRunner {
                 1 - Buscar séries
                 2 - Buscar episódios
                 3 - Listar séries buscadas
+                4 - Buscar séries por título
 
                 0 - Sair""";
 
@@ -69,6 +71,10 @@ public class Principal implements CommandLineRunner {
 
                 case 3:
                     listarSeriesBuscadas();
+                    break;
+
+                case 4:
+                    buscarSeriePorTitulo();
                     break;
 
                 default:
@@ -104,25 +110,26 @@ public class Principal implements CommandLineRunner {
                 .collect(Collectors.toSet());
 
         System.out.println(
-                "Digite o nome da série para buscar seus episódios: " + nomeSeries.toString());
+                "Digite o trecho do título da série para buscar seus episódios: " +
+                        nomeSeries.toString());
 
-        final String nomeSerie = scanner.nextLine();
+        final String trechoTituloSerie = scanner.nextLine();
 
-        final Serie serieEncontrada = series.stream()
-                .filter(serie -> serie.getTitulo().toLowerCase().contains(nomeSerie))
-                .findFirst()
-                .orElse(null);
+        final Optional<Serie> optionalSerieEncontrada =
+                serieRepository.findByTituloContainingIgnoreCase(trechoTituloSerie);
 
-        if (serieEncontrada == null) {
-            System.out.println("Série não encontrada. Tente novamente.");
+        if (optionalSerieEncontrada.isEmpty()) {
+            System.out.println("Série não encontrada.");
             return;
         }
 
-        final String nomeSerieFormatada = nomeSerie.replace(" ", "+");
+        final Serie serieEncontrada = optionalSerieEncontrada.get();
+
+        final String nomeSerie = serieEncontrada.getTitulo().toLowerCase().replace(" ", "+");
 
         final List<Temporada> temporadas = IntStream
                 .range(1, serieEncontrada.getTotalTemporadas() + 1)
-                .mapToObj(i -> consumoApi.getTemporada(nomeSerieFormatada, i))
+                .mapToObj(i -> consumoApi.getTemporada(nomeSerie, i))
                 .collect(Collectors.toList());
 
         final List<Episodio> episodios = temporadas
@@ -150,4 +157,23 @@ public class Principal implements CommandLineRunner {
                 ))
                 .forEach(System.out::println);
     }
+
+    private void buscarSeriePorTitulo() {
+
+        System.out.println(
+            "Digite o trecho do título da série para buscar:");
+
+        final String trechoTituloSerie = scanner.nextLine();
+
+        final Optional<Serie> optionalSerieEncontrada =
+                serieRepository.findByTituloContainingIgnoreCase(trechoTituloSerie);
+
+        if (optionalSerieEncontrada.isEmpty()) {
+            System.out.println("Série não encontrada.");
+            return;
+        }
+
+        System.out.println(optionalSerieEncontrada.get());
+    }
+
 }
