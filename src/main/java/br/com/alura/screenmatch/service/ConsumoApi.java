@@ -40,23 +40,23 @@ public class ConsumoApi {
 
     public Serie getSerie(final String nomeSerie) {
 
-        URI uri = UriComponentsBuilder.fromHttpUrl(ENDERECO_BASE)
+        final URI uri = UriComponentsBuilder.fromHttpUrl(ENDERECO_BASE)
                 .queryParam(CHAVE_API_KEY, API_KEY)
                 .queryParam(CHAVE_SERIE, nomeSerie)
                 .build()
                 .encode()
                 .toUri();
 
-        SerieDto serieDto = restTemplate.getForObject(uri, SerieDto.class);
+        final SerieDto serieDto = restTemplate.getForObject(uri, SerieDto.class);
 
-        Serie serie = serieMapper.serieDtoToSerie(serieDto);
+        final Serie serie = serieMapper.serieDtoToSerie(serieDto);
 
         return serie;
     }
 
     public Temporada getTemporada(final String nomeSerie, final int numeroTemporada) {
 
-        URI uri = UriComponentsBuilder.fromHttpUrl(ENDERECO_BASE)
+        final URI uri = UriComponentsBuilder.fromHttpUrl(ENDERECO_BASE)
                 .queryParam(CHAVE_API_KEY, API_KEY)
                 .queryParam(CHAVE_SERIE, nomeSerie)
                 .queryParam(CHAVE_TEMPORADA, numeroTemporada)
@@ -64,9 +64,9 @@ public class ConsumoApi {
                 .encode()
                 .toUri();
 
-        TemporadaDto temporadaDto = restTemplate.getForObject(uri, TemporadaDto.class);
+        final TemporadaDto temporadaDto = restTemplate.getForObject(uri, TemporadaDto.class);
 
-        Temporada temporada = temporadaMapper.temporadaDtoToTemporada(temporadaDto);
+        final Temporada temporada = temporadaMapper.temporadaDtoToTemporada(temporadaDto);
 
         return temporada;
     }
