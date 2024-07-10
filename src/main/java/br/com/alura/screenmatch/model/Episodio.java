@@ -22,12 +22,37 @@ public class Episodio {
     @ManyToOne
     private Serie serie;
 
+    private int temporada;
+
     private String titulo;
 
     private Integer numero;
 
-    private String avaliacao;
+    private Double avaliacao;
 
     private String dataLancamento;
+
+    @Override
+    public String toString() {
+        final String template = """
+                Episodio[
+                    id=%d,
+                    temporada=%d,
+                    titulo='%s',
+                    numero=%d,
+                    avaliacao=%.1f,
+                    dataLancamento='%s'
+                ]
+                """;
+
+        return String.format(
+                template,
+                id,
+                temporada,
+                titulo,
+                numero,
+                avaliacao,
+                dataLancamento);
+    }
 
 }

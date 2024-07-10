@@ -3,6 +3,7 @@ package br.com.alura.screenmatch.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -33,9 +34,9 @@ public class Serie {
 
     private Integer totalTemporadas;
 
-    private String avaliacao;
+    private Double avaliacao;
 
-    @ElementCollection(targetClass = Genero.class)
+    @ElementCollection(targetClass = Genero.class, fetch = FetchType.EAGER)
     @CollectionTable
     @Enumerated(EnumType.STRING)
     // @JdbcType(PostgreSQLEnumJdbcType.class)
@@ -47,6 +48,41 @@ public class Serie {
 
     private String sinopse;
 
-    @OneToMany(mappedBy = "serie")
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     List<Episodio> episodios = new ArrayList<Episodio>();
+
+    public void setEpisodios(List<Episodio> episodios) {
+        this.episodios = episodios;
+
+        episodios.forEach(episodio -> episodio.setSerie(this));
+    }
+
+    @Override
+    public String toString() {
+        final String template = """
+                Serie[
+                    id=%d,
+                    titulo='%s',
+                    totalTemporadas=%d,
+                    avaliacao=%.1f,
+                    generos=%s,
+                    atores='%s',
+                    poster='%s',
+                    sinopse='%s',
+                    episodios=%s
+                ]
+                """;
+
+        return String.format(
+                template,
+                id,
+                titulo,
+                totalTemporadas,
+                avaliacao,
+                generos,
+                atores,
+                poster,
+                sinopse,
+                episodios);
+    }
 }

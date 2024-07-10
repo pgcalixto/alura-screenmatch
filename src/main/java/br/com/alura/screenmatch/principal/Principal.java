@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
+import br.com.alura.screenmatch.model.Episodio;
 import br.com.alura.screenmatch.model.Serie;
 import br.com.alura.screenmatch.model.Temporada;
 import br.com.alura.screenmatch.repository.SerieRepository;
@@ -107,12 +108,12 @@ public class Principal implements CommandLineRunner {
 
         final String nomeSerie = scanner.nextLine();
 
-        final Serie serieBuscada = series.stream()
+        final Serie serieEncontrada = series.stream()
                 .filter(serie -> serie.getTitulo().toLowerCase().contains(nomeSerie))
                 .findFirst()
                 .orElse(null);
 
-        if (serieBuscada == null) {
+        if (serieEncontrada == null) {
             System.out.println("Série não encontrada. Tente novamente.");
             return;
         }
@@ -120,9 +121,18 @@ public class Principal implements CommandLineRunner {
         final String nomeSerieFormatada = nomeSerie.replace(" ", "+");
 
         final List<Temporada> temporadas = IntStream
-                .range(1, serieBuscada.getTotalTemporadas() + 1)
+                .range(1, serieEncontrada.getTotalTemporadas() + 1)
                 .mapToObj(i -> consumoApi.getTemporada(nomeSerieFormatada, i))
                 .collect(Collectors.toList());
+
+        final List<Episodio> episodios = temporadas
+                .stream()
+                .flatMap(temporada -> temporada.episodios().stream())
+                .collect(Collectors.toList());
+
+        serieEncontrada.setEpisodios(episodios);
+
+        serieRepository.save(serieEncontrada);
 
         temporadas.forEach(System.out::println);
     }
