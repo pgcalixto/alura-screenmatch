@@ -13,6 +13,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
 import br.com.alura.screenmatch.model.Episodio;
+import br.com.alura.screenmatch.model.Genero;
 import br.com.alura.screenmatch.model.Serie;
 import br.com.alura.screenmatch.model.Temporada;
 import br.com.alura.screenmatch.repository.SerieRepository;
@@ -46,6 +47,7 @@ public class Principal implements CommandLineRunner {
                 4 - Buscar séries por título
                 5 - Buscar séries por ator e avaliação
                 6 - Buscar as 5 séries mais bem avaliadas
+                7 - Buscar séries por gênero
 
                 0 - Sair""";
 
@@ -85,6 +87,10 @@ public class Principal implements CommandLineRunner {
 
                 case 6:
                     buscarSeriesMaisBemAvaliadas();
+                    break;
+
+                case 7:
+                    buscarSeriesPorGenero();
                     break;
 
                 default:
@@ -216,6 +222,26 @@ public class Principal implements CommandLineRunner {
         final List<Serie> seriesMaisBemAvaliadas = serieRepository.findFirst5ByOrderByAvaliacaoDesc();
 
         seriesMaisBemAvaliadas.forEach(System.out::println);
+    }
+
+    private void buscarSeriesPorGenero() {
+
+        final List<Genero> generos = serieRepository.findDistinctGeneros();
+
+        final List<String> nomesGeneros = generos.stream()
+                .map(Genero::getNome)
+                .collect(Collectors.toList());
+
+        System.out.println(
+                "Digite o nome de algum gênero: " + nomesGeneros.toString());
+
+        final String nomeGenero = scanner.nextLine();
+
+        final Genero genero = Genero.fromNome(nomeGenero);
+
+        final List<Serie> series = serieRepository.findByGenerosIn(genero);
+
+        series.forEach(System.out::println);
     }
 
 }
