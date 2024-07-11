@@ -48,6 +48,7 @@ public class Principal implements CommandLineRunner {
                 5 - Buscar séries por ator e avaliação
                 6 - Buscar as 5 séries mais bem avaliadas
                 7 - Buscar séries por gênero
+                8 - Buscar séries por número máximo de temporadas e avaliação
 
                 0 - Sair""";
 
@@ -91,6 +92,10 @@ public class Principal implements CommandLineRunner {
 
                 case 7:
                     buscarSeriesPorGenero();
+                    break;
+
+                case 8:
+                    buscarSeriesPorMaximoDeTemporadasEAvaliacao();
                     break;
 
                 default:
@@ -240,6 +245,33 @@ public class Principal implements CommandLineRunner {
         final Genero genero = Genero.fromNome(nomeGenero);
 
         final List<Serie> series = serieRepository.findByGenerosIn(genero);
+
+        series.forEach(System.out::println);
+    }
+
+    private void buscarSeriesPorMaximoDeTemporadasEAvaliacao() {
+
+        System.out.println(
+            "Digite o número máximo de temporadas das séries que deseja buscar:");
+
+        final int numMaximoTemporadas = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.println(
+                "Digite a avaliação mínima das séries que deseja buscar:");
+
+        final Double avaliacao = scanner.nextDouble();
+        scanner.nextLine();
+
+        final List<Serie> series = serieRepository
+                .findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(
+                        numMaximoTemporadas,
+                        avaliacao);
+
+        if (series.isEmpty()) {
+            System.out.println("Nenhuma série encontrada.");
+            return;
+        }
 
         series.forEach(System.out::println);
     }
