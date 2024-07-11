@@ -68,10 +68,8 @@ public class Serie {
                     generos=%s,
                     atores='%s',
                     poster='%s',
-                    sinopse='%s',
-                    episodios=%s
-                ]
-                """;
+                    sinopse='%s'
+                ]""";
 
         return String.format(
                 template,
@@ -82,7 +80,6 @@ public class Serie {
                 generos,
                 atores,
                 poster,
-                sinopse,
-                episodios);
+                sinopse);
     }
 }
