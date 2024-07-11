@@ -45,6 +45,7 @@ public class Principal implements CommandLineRunner {
                 3 - Listar séries buscadas
                 4 - Buscar séries por título
                 5 - Buscar séries por ator e avaliação
+                6 - Buscar as 5 séries mais bem avaliadas
 
                 0 - Sair""";
 
@@ -80,6 +81,10 @@ public class Principal implements CommandLineRunner {
 
                 case 5:
                     buscarSeriePorAtorEAvaliacao();
+                    break;
+
+                case 6:
+                    buscarSeriesMaisBemAvaliadas();
                     break;
 
                 default:
@@ -204,6 +209,13 @@ public class Principal implements CommandLineRunner {
         }
 
         series.forEach(System.out::println);
+    }
+
+    private void buscarSeriesMaisBemAvaliadas() {
+
+        final List<Serie> seriesMaisBemAvaliadas = serieRepository.findFirst5ByOrderByAvaliacaoDesc();
+
+        seriesMaisBemAvaliadas.forEach(System.out::println);
     }
 
 }

@@ -14,4 +14,6 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
             String atores,
             Double avaliacao);
 
+    List<Serie> findFirst5ByOrderByAvaliacaoDesc();
+
 }
