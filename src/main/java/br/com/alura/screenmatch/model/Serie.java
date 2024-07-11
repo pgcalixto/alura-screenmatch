@@ -36,7 +36,7 @@ public class Serie {
 
     private Double avaliacao;
 
-    @ElementCollection(targetClass = Genero.class, fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable
     @Enumerated(EnumType.STRING)
     // @JdbcType(PostgreSQLEnumJdbcType.class)
