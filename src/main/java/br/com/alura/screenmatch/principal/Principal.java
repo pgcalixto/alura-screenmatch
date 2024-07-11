@@ -44,6 +44,7 @@ public class Principal implements CommandLineRunner {
                 2 - Buscar episódios
                 3 - Listar séries buscadas
                 4 - Buscar séries por título
+                5 - Buscar séries por ator
 
                 0 - Sair""";
 
@@ -75,6 +76,10 @@ public class Principal implements CommandLineRunner {
 
                 case 4:
                     buscarSeriePorTitulo();
+                    break;
+
+                case 5:
+                    buscarSeriePorAtor();
                     break;
 
                 default:
@@ -173,6 +178,24 @@ public class Principal implements CommandLineRunner {
         }
 
         System.out.println(optionalSerieEncontrada.get());
+    }
+
+    private void buscarSeriePorAtor() {
+
+        System.out.println(
+                "Digite o nome do ator cuja série deseja buscar:");
+
+        final String ator = scanner.nextLine();
+
+        final List<Serie> series = serieRepository
+                .findByAtoresContainingIgnoreCase(ator);
+
+        if (series.isEmpty()) {
+            System.out.println("Nenhuma série encontrada.");
+            return;
+        }
+
+        series.forEach(System.out::println);
     }
 
 }
