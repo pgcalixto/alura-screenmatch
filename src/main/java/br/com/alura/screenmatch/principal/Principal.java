@@ -264,9 +264,7 @@ public class Principal implements CommandLineRunner {
         scanner.nextLine();
 
         final List<Serie> series = serieRepository
-                .findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(
-                        numMaximoTemporadas,
-                        avaliacao);
+                .findByTotalTemporadasAvaliacao(numMaximoTemporadas, avaliacao);
 
         if (series.isEmpty()) {
             System.out.println("Nenhuma série encontrada.");

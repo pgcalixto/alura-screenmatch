@@ -23,8 +23,15 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
     @Query("SELECT DISTINCT g FROM Serie s JOIN s.generos g ORDER BY g")
     List<Genero> findDistinctGeneros();
 
+    /**
+     * @deprecated Use {@link SerieRepository#findByTotalTemporadasAvaliacao(Integer, Double)}
+     */
+    @Deprecated
     List<Serie> findByTotalTemporadasLessThanEqualAndAvaliacaoGreaterThanEqual(
             Integer totalTemporadas,
             Double avaliacao);
+
+    @Query("SELECT s FROM Serie s WHERE s.totalTemporadas <= :totalTemporadas AND s.avaliacao >= :avaliacao")
+    List<Serie> findByTotalTemporadasAvaliacao(Integer totalTemporadas, Double avaliacao);
 
 }
