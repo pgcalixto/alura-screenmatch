@@ -51,6 +51,7 @@ public class Principal implements CommandLineRunner {
                 8 - Buscar séries por número máximo de temporadas e avaliação
                 9 - Buscar episódios por trecho
                 10 - Buscar 5 eposódios mais bem avaliados por série
+                11 - Buscar episódios a partir de um ano
 
                 0 - Sair""";
 
@@ -106,6 +107,10 @@ public class Principal implements CommandLineRunner {
 
                 case 10:
                     buscarEpisodiosMaisBemAvaliadosPorSerie();
+                    break;
+
+                case 11:
+                    buscarEpisodiosAPartirDeAno();
                     break;
 
                 default:
@@ -317,6 +322,31 @@ public class Principal implements CommandLineRunner {
         final List<Episodio> episodiosMaisBemAvaliados = serieRepository.findFirst5EpisodiosPorSerie(serie);
 
         episodiosMaisBemAvaliados.forEach(System.out::println);
+    }
+
+    private void buscarEpisodiosAPartirDeAno() {
+
+        Optional<Serie> optionalSerie = buscarSeriePorTitulo();
+
+        if (optionalSerie.isEmpty()) {
+            return;
+        }
+
+        System.out.println("Digite o ano limite de lançamento");
+
+        final int anoMinimo = scanner.nextInt();
+        scanner.nextLine();
+
+        Serie serie = optionalSerie.get();
+
+        final List<Episodio> episodios = serieRepository.findEpisodiosByAnoMinimo(serie, anoMinimo);
+
+        if (episodios.isEmpty()) {
+            System.out.println("Nenhum episódio encontrado a partir deste ano.");
+            return;
+        }
+
+        episodios.forEach(System.out::println);
     }
 
 }

@@ -44,8 +44,7 @@ public class Episodio {
                     numero=%d,
                     avaliacao=%.1f,
                     dataLancamento='%s'
-                ]
-                """;
+                ]""";
 
         return String.format(
                 template,

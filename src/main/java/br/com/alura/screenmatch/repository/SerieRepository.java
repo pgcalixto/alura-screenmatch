@@ -42,4 +42,7 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
     @Query("SELECT e FROM Serie s JOIN s.episodios e WHERE s = :serie AND e.avaliacao IS NOT NULL ORDER BY e.avaliacao DESC LIMIT 5")
     List<Episodio> findFirst5EpisodiosPorSerie(Serie serie);
 
+    @Query("SELECT e FROM Serie s JOIN s.episodios e WHERE s = :serie AND YEAR(e.dataLancamento) >= :anoMinimo ORDER BY e.id")
+    List<Episodio> findEpisodiosByAnoMinimo(Serie serie, int anoMinimo);
+
 }
