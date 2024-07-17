@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import br.com.alura.screenmatch.model.Serie;
 import java.util.Optional;
 import java.util.List;
+
+import br.com.alura.screenmatch.model.Episodio;
 import br.com.alura.screenmatch.model.Genero;
 
 public interface SerieRepository extends JpaRepository<Serie, Long> {
@@ -33,5 +35,8 @@ public interface SerieRepository extends JpaRepository<Serie, Long> {
 
     @Query("SELECT s FROM Serie s WHERE s.totalTemporadas <= :totalTemporadas AND s.avaliacao >= :avaliacao")
     List<Serie> findByTotalTemporadasAvaliacao(Integer totalTemporadas, Double avaliacao);
+
+    @Query("SELECT e FROM Serie s JOIN s.episodios e WHERE e.titulo ILIKE %:trechoTituloEpisodio%")
+    List<Episodio> findEpisodiosPorTrecho(String trechoTituloEpisodio);
 
 }

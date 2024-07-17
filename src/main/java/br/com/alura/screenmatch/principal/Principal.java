@@ -49,6 +49,7 @@ public class Principal implements CommandLineRunner {
                 6 - Buscar as 5 séries mais bem avaliadas
                 7 - Buscar séries por gênero
                 8 - Buscar séries por número máximo de temporadas e avaliação
+                9 - Buscar episódios por trecho
 
                 0 - Sair""";
 
@@ -96,6 +97,10 @@ public class Principal implements CommandLineRunner {
 
                 case 8:
                     buscarSeriesPorMaximoDeTemporadasEAvaliacao();
+                    break;
+
+                case 9:
+                    buscarEpisodioPorTrecho();
                     break;
 
                 default:
@@ -272,6 +277,23 @@ public class Principal implements CommandLineRunner {
         }
 
         series.forEach(System.out::println);
+    }
+
+    private void buscarEpisodioPorTrecho() {
+
+        System.out.println("Qual o trecho do título do episódio para buscar?");
+
+        final String trechoTituloEpisodio = scanner.nextLine();
+
+        List<Episodio> episodios = serieRepository.findEpisodiosPorTrecho(trechoTituloEpisodio);
+
+        episodios.forEach((episodio) -> {
+            System.out.printf("Série \"%s\", Temporada %s, Episodio %d: %s\n",
+                    episodio.getSerie().getTitulo(),
+                    episodio.getTemporada(),
+                    episodio.getNumero(),
+                    episodio.getTitulo());
+        });
     }
 
 }
