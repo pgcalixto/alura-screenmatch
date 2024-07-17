@@ -1,5 +1,7 @@
 package br.com.alura.screenmatch.model;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,7 +32,7 @@ public class Episodio {
 
     private Double avaliacao;
 
-    private String dataLancamento;
+    private LocalDate dataLancamento;
 
     @Override
     public String toString() {

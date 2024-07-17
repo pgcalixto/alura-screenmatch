@@ -1,5 +1,10 @@
 package br.com.alura.screenmatch.dto;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+
 import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -18,10 +23,14 @@ public class EpisodioDto {
 
     private Double avaliacao;
 
-    private String dataLancamento;
+    private LocalDate dataLancamento;
 
     @Setter
     private int temporada;
+
+    private static final DateTimeFormatter formatter = new DateTimeFormatterBuilder()
+            .append(DateTimeFormatter.ISO_LOCAL_DATE)
+            .toFormatter();
 
     public EpisodioDto(
             @JsonAlias("Title")
@@ -40,7 +49,12 @@ public class EpisodioDto {
         this.titulo = titulo;
         this.numero = numero;
         this.avaliacao = avaliacao;
-        this.dataLancamento = dataLancamento;
+
+        try {
+            this.dataLancamento = LocalDate.parse(dataLancamento, formatter);
+        } catch (DateTimeParseException e) {
+            this.dataLancamento = null;
+        }
     }
 
 }
