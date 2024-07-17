@@ -50,6 +50,7 @@ public class Principal implements CommandLineRunner {
                 7 - Buscar séries por gênero
                 8 - Buscar séries por número máximo de temporadas e avaliação
                 9 - Buscar episódios por trecho
+                10 - Buscar 5 eposódios mais bem avaliados por série
 
                 0 - Sair""";
 
@@ -101,6 +102,10 @@ public class Principal implements CommandLineRunner {
 
                 case 9:
                     buscarEpisodioPorTrecho();
+                    break;
+
+                case 10:
+                    buscarEpisodiosMaisBemAvaliadosPorSerie();
                     break;
 
                 default:
@@ -183,7 +188,7 @@ public class Principal implements CommandLineRunner {
                 .forEach(System.out::println);
     }
 
-    private void buscarSeriePorTitulo() {
+    private Optional<Serie> buscarSeriePorTitulo() {
 
         System.out.println(
                 "Digite o trecho do título da série para buscar:");
@@ -195,10 +200,13 @@ public class Principal implements CommandLineRunner {
 
         if (optionalSerieEncontrada.isEmpty()) {
             System.out.println("Série não encontrada.");
-            return;
+
+            return optionalSerieEncontrada;
         }
 
         System.out.println(optionalSerieEncontrada.get());
+
+        return optionalSerieEncontrada;
     }
 
     private void buscarSeriePorAtorEAvaliacao() {
@@ -294,6 +302,21 @@ public class Principal implements CommandLineRunner {
                     episodio.getNumero(),
                     episodio.getTitulo());
         });
+    }
+
+    private void buscarEpisodiosMaisBemAvaliadosPorSerie() {
+
+        Optional<Serie> optionalSerie = buscarSeriePorTitulo();
+
+        if (optionalSerie.isEmpty()) {
+            return;
+        }
+
+        final Serie serie = optionalSerie.get();
+
+        final List<Episodio> episodiosMaisBemAvaliados = serieRepository.findFirst5EpisodiosPorSerie(serie);
+
+        episodiosMaisBemAvaliados.forEach(System.out::println);
     }
 
 }
