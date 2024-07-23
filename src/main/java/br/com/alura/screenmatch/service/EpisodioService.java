@@ -37,4 +37,13 @@ public class EpisodioService {
         return episodioDtos;
     }
 
+    public List<EpisodioDto> obterEpisodiosMaisBemAvaliadosPorSerie(Long serieId) {
+
+        final List<Episodio> episodios = episodioRepository.findFirst5BySerieIdAndAvaliacaoIsNotNullOrderByAvaliacaoDescIdDesc(serieId);
+
+        final List<EpisodioDto> episodioDtos = episodioMapper.episodiosToEpisodioDtos(episodios);
+
+        return episodioDtos;
+    }
+
 }

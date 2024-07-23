@@ -71,4 +71,10 @@ class SerieController {
         return serieService.obterSeriesPorGenero(nomeGenero);
     }
 
+    @GetMapping("/{id}/temporadas/top")
+    public List<EpisodioDto> obterEpisodiosMaisBemAvaliadosPorSerie(@PathVariable Long id) {
+
+        return episodioService.obterEpisodiosMaisBemAvaliadosPorSerie(id);
+    }
+
 }

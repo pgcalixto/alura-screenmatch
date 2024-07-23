@@ -12,4 +12,6 @@ public interface EpisodioRepository extends JpaRepository<Episodio, Long> {
 
     List<Episodio> findBySerieIdAndTemporada(Long serieId, int temporada);
 
+    List<Episodio> findFirst5BySerieIdAndAvaliacaoIsNotNullOrderByAvaliacaoDescIdDesc(Long serieId);
+
 }
