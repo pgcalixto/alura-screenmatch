@@ -10,12 +10,17 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.alura.screenmatch.dto.EpisodioDto;
 import br.com.alura.screenmatch.dto.SerieDto;
+import br.com.alura.screenmatch.service.EpisodioService;
 import br.com.alura.screenmatch.service.SerieService;
 
 @RestController
 @RequestMapping("/series")
 class SerieController {
+
+    @Autowired
+    private EpisodioService episodioService;
 
     @Autowired
     private SerieService serieService;
@@ -45,6 +50,11 @@ class SerieController {
         }
 
         return new ResponseEntity<>(serieDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/temporadas/todas")
+    public List<EpisodioDto> obterTodasTemporadasDeSerie(@PathVariable Long id) {
+        return episodioService.obterTodasTemporadasDeSerie(id);
     }
 
 }
