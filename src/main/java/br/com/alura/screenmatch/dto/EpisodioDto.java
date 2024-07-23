@@ -2,7 +2,7 @@ package br.com.alura.screenmatch.dto;
 
 public record EpisodioDto(
         String titulo,
-        Integer numero,
+        Integer numeroEpisodio,
         Double avaliacao,
         String dataLancamento,
         int temporada) {

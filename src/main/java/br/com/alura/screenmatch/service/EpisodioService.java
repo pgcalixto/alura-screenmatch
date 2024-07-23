@@ -28,4 +28,13 @@ public class EpisodioService {
         return episodioDtos;
     }
 
+    public List<EpisodioDto> obterTemporadaDeSerie(Long serieId, int temporada) {
+
+        final List<Episodio> episodios = episodioRepository.findBySerieIdAndTemporada(serieId, temporada);
+
+        final List<EpisodioDto> episodioDtos = episodioMapper.episodiosToEpisodioDtos(episodios);
+
+        return episodioDtos;
+    }
+
 }

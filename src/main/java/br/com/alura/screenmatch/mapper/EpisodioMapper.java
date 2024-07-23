@@ -23,6 +23,11 @@ public interface EpisodioMapper {
     @IterableMapping(qualifiedByName="episodioImdbDtoToEpisodio")
     List<Episodio> episodioImdbDtosToEpisodios(List<EpisodioImdbDto> episodioImdbDtos);
 
+    @Named("episodioToEpisodioDto")
+    @Mapping(source = "numero", target = "numeroEpisodio")
+    EpisodioDto episodioToEpisodioDto(Episodio episodio);
+
+    @IterableMapping(qualifiedByName = "episodioToEpisodioDto")
     List<EpisodioDto> episodiosToEpisodioDtos(List<Episodio> episodios);
 
 }

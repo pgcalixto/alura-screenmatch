@@ -10,4 +10,6 @@ public interface EpisodioRepository extends JpaRepository<Episodio, Long> {
 
     List<Episodio> findBySerieId(Long serieId);
 
+    List<Episodio> findBySerieIdAndTemporada(Long serieId, int temporada);
+
 }
