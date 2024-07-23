@@ -65,4 +65,10 @@ class SerieController {
         return episodioService.obterTemporadaDeSerie(id, temporada);
     }
 
+    @GetMapping("/categoria/{nomeGenero}")
+    public List<SerieDto> obterSeriesPorGenero(@PathVariable String nomeGenero) {
+
+        return serieService.obterSeriesPorGenero(nomeGenero);
+    }
+
 }

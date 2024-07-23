@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.alura.screenmatch.dto.SerieDto;
 import br.com.alura.screenmatch.mapper.SerieMapper;
+import br.com.alura.screenmatch.model.Genero;
 import br.com.alura.screenmatch.model.Serie;
 import br.com.alura.screenmatch.repository.SerieRepository;
 
@@ -55,6 +56,17 @@ public class SerieService {
         final SerieDto serieDto = serieMapper.serieToSerieDto(serie);
 
         return serieDto;
+    }
+
+    public List<SerieDto> obterSeriesPorGenero(String nomeGenero) {
+
+        final Genero genero = Genero.fromNome(nomeGenero.toLowerCase());
+
+        final List<Serie> series = serieRepository.findByGenerosIn(genero);
+
+        final List<SerieDto> serieDtos = serieMapper.seriesToSerieDtos(series);
+
+        return serieDtos;
     }
 
 }
