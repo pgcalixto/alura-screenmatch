@@ -28,4 +28,13 @@ public class SerieService {
         return serieDtos;
     }
 
+    public List<SerieDto> obterSeriesMaisBemAvaliadas() {
+
+        final List<Serie> series = serieRepository.findFirst5ByOrderByAvaliacaoDesc();
+
+        final List<SerieDto> serieDtos = serieMapper.seriesToSerieDtos(series);
+
+        return serieDtos;
+    }
+
 }
