@@ -37,4 +37,13 @@ public class SerieService {
         return serieDtos;
     }
 
+    public List<SerieDto> obterLancamentos() {
+
+        final List<Serie> series = serieRepository.findTop5Lancamentos();
+
+        final List<SerieDto> serieDtos = serieMapper.seriesToSerieDtos(series);
+
+        return serieDtos;
+    }
+
 }

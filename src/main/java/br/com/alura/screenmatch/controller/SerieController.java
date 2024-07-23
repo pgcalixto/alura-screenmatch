@@ -26,4 +26,10 @@ class SerieController {
     List<SerieDto> obterSeriesMaisBemAvaliadas() {
         return serieService.obterSeriesMaisBemAvaliadas();
     }
+
+    @GetMapping("/lancamentos")
+    public List<SerieDto> obterLancamentos() {
+        return serieService.obterLancamentos();
+    }
+
 }
