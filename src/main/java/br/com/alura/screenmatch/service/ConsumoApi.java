@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.alura.screenmatch.dto.SerieDto;
-import br.com.alura.screenmatch.dto.TemporadaDto;
+import br.com.alura.screenmatch.dto.SerieImdbDto;
+import br.com.alura.screenmatch.dto.TemporadaImdbDto;
 import br.com.alura.screenmatch.mapper.SerieMapper;
 import br.com.alura.screenmatch.mapper.TemporadaMapper;
 import br.com.alura.screenmatch.model.Serie;
@@ -47,9 +47,9 @@ public class ConsumoApi {
                 .encode()
                 .toUri();
 
-        final SerieDto serieDto = restTemplate.getForObject(uri, SerieDto.class);
+        final SerieImdbDto serieImdbDto = restTemplate.getForObject(uri, SerieImdbDto.class);
 
-        final Serie serie = serieMapper.serieDtoToSerie(serieDto);
+        final Serie serie = serieMapper.serieImdbDtoToSerie(serieImdbDto);
 
         return serie;
     }
@@ -64,9 +64,9 @@ public class ConsumoApi {
                 .encode()
                 .toUri();
 
-        final TemporadaDto temporadaDto = restTemplate.getForObject(uri, TemporadaDto.class);
+        final TemporadaImdbDto temporadaImdbDto = restTemplate.getForObject(uri, TemporadaImdbDto.class);
 
-        final Temporada temporada = temporadaMapper.temporadaDtoToTemporada(temporadaDto);
+        final Temporada temporada = temporadaMapper.temporadaImdbDtoToTemporada(temporadaImdbDto);
 
         return temporada;
     }

@@ -12,16 +12,16 @@ import lombok.Getter;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Getter
-public class TemporadaDto {
+public class TemporadaImdbDto {
 
     private Integer numero;
 
-    private List<EpisodioDto> episodios;
+    private List<EpisodioImdbDto> episodios;
 
     @JsonCreator
-    public TemporadaDto(
+    public TemporadaImdbDto(
             @JsonAlias("Season") Integer numero,
-            @JsonAlias("Episodes") List<EpisodioDto> episodios) {
+            @JsonAlias("Episodes") List<EpisodioImdbDto> episodios) {
 
         this.numero = numero;
 

@@ -6,6 +6,8 @@ import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +22,7 @@ public enum Genero {
     DRAMA("drama", "drama"),
     ROMANCE("romance", "romance");
 
+    @JsonValue
     private final String nome;
 
     private final String categoriaImdb;

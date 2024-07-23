@@ -8,18 +8,21 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 
 import br.com.alura.screenmatch.dto.EpisodioDto;
+import br.com.alura.screenmatch.dto.EpisodioImdbDto;
 import br.com.alura.screenmatch.model.Episodio;
 
 @Mapper(componentModel = "spring")
 public interface EpisodioMapper {
 
-    @Named("episodioDtoToEpisodio")
+    @Named("episodioImdbDtoToEpisodio")
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "serie", ignore = true)
-    Episodio episodioDtoToEpisodio(EpisodioDto episodioDto);
+    Episodio episodioImdbDtoToEpisodio(EpisodioImdbDto episodioImdbDto);
 
-    @Named("episodioDtosToEpisodios")
-    @IterableMapping(qualifiedByName="episodioDtoToEpisodio")
-    List<Episodio> episodioDtosToEpisodios(List<EpisodioDto> episodioDtos);
+    @Named("episodioImdbDtosToEpisodios")
+    @IterableMapping(qualifiedByName="episodioImdbDtoToEpisodio")
+    List<Episodio> episodioImdbDtosToEpisodios(List<EpisodioImdbDto> episodioImdbDtos);
+
+    List<EpisodioDto> episodiosToEpisodioDtos(List<Episodio> episodios);
 
 }
