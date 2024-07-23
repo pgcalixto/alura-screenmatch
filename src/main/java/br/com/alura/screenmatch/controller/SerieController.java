@@ -3,7 +3,10 @@ package br.com.alura.screenmatch.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +33,18 @@ class SerieController {
     @GetMapping("/lancamentos")
     public List<SerieDto> obterLancamentos() {
         return serieService.obterLancamentos();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<SerieDto> obterSeriePorId(@PathVariable Long id) {
+
+        final SerieDto serieDto = serieService.obterSeriePorId(id);
+
+        if (serieDto == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<>(serieDto, HttpStatus.OK);
     }
 
 }

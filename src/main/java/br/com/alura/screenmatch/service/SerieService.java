@@ -46,4 +46,15 @@ public class SerieService {
         return serieDtos;
     }
 
+    public SerieDto obterSeriePorId(Long id) {
+
+        final Serie serie = serieRepository
+                .findById(id)
+                .orElse(null);
+
+        final SerieDto serieDto = serieMapper.serieToSerieDto(serie);
+
+        return serieDto;
+    }
+
 }

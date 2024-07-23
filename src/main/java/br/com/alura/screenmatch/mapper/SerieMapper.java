@@ -16,6 +16,8 @@ public interface SerieMapper {
     @Mapping(target = "episodios", ignore = true)
     Serie serieImdbDtoToSerie(SerieImdbDto serieImdbDto);
 
+    SerieDto serieToSerieDto(Serie serie);
+
     List<SerieDto> seriesToSerieDtos(List<Serie> series);
 
 }
