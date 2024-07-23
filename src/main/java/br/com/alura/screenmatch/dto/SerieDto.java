@@ -12,7 +12,6 @@ public record SerieDto(
         List<Genero> generos,
         String atores,
         String poster,
-        String sinopse,
-        List<EpisodioDto> episodios) {
+        String sinopse) {
 
 }
